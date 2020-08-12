@@ -59,8 +59,8 @@ class Graph:
 
         while s.size() > 0:
             v = s.pop()
-
             if v not in visited:
+                print(v)
                 visited.add(v)
                 for i in self.get_neighbors(v):
                     s.push(i)
@@ -77,9 +77,8 @@ class Graph:
         def dft_helper(vertex):
             if vertex in visited:
                 return
-
             visited.add(vertex)
-
+            print(vertex)
             for v in self.vertices[vertex]:
                 dft_helper(v)
 
@@ -94,7 +93,6 @@ class Graph:
         q = Queue()
         q.enqueue([starting_vertex])
         visited = set()
-
         while q.size() > 0:
             current_path = q.dequeue()
             last_vertex = current_path[-1]
@@ -106,7 +104,6 @@ class Graph:
                     new_path = list(current_path)
                     new_path.append(v)
                     q.enqueue(new_path)
-
         return None
 
     def dfs(self, starting_vertex, destination_vertex):
@@ -143,7 +140,6 @@ class Graph:
         """
         if visited is None:
             visited = set()
-
         if path is None:
             path = []
 
@@ -151,7 +147,6 @@ class Graph:
             visited.add(starting_vertex)
             path_copy = path.copy()
             path_copy.append(starting_vertex)
-
             if starting_vertex == destination_vertex:
                 return path_copy
             for v in self.get_neighbors(starting_vertex):
