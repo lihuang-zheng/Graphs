@@ -1,4 +1,5 @@
 import random
+from util import Queue
 
 
 class User:
@@ -75,19 +76,28 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
-        visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
-        queue = [user_id]
-        visited[user_id] = [user_id]
+        # store paths to friends in the dictionary
+        visited = {user_id: [user_id]}
 
-        while len(queue) > 0:
-            node = queue.pop()
-            friends = self.friendships[node]
+        # use a queue to keep track of all friends that have not been visited
+        visited_friend = Queue()
+        visited_friend.enqueue(user_id)
 
-            for friend in friends:
-                if friend not in visited:
-                    visited[friend] = visited[node] + [friend]
-                    queue.append(friend)
+        while visited_friend.size() > 0:
+            current_friend_ID = visited_friend.dequeue()
+            friends_of_current_friend = self.friendships[current_friend_ID]
+
+            for friend_ID in friends_of_current_friend:
+
+                # add new friend to queue and update path
+                if friend_ID not in visited:
+                    visited_friend.enqueue(friend_ID)
+
+                    # make a copy of the path to the friend, and add the current friend's ID
+                    # store the path in "visited" to mark the friend as visited
+                    path_to_new_friend = list(visited[current_friend_ID])
+                    path_to_new_friend.append(friend_ID)
+                    visited[friend_ID] = path_to_new_friend
 
         return visited
 
